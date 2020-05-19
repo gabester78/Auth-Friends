@@ -3,16 +3,16 @@ import axios from "axios";
 
 class Login extends React.Component {
   state = {
-    friends: {
-      name: "",
-      email: "",
+    credentials: {
+      username: "",
+      password: "",
     },
   };
 
   handleChange = (e) => {
     this.setState({
-      friends: {
-        ...this.state.friends,
+      credentials: {
+        ...this.state.credentials,
         [e.target.name]: e.target.value,
       },
     });
@@ -20,34 +20,47 @@ class Login extends React.Component {
 
   login = (e) => {
     e.preventDefault();
+    axios
+      .post(`http://localhost:5000/api/login`, this.state.credentials)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   render() {
     return (
       <div>
         <h3>Login to see all our friends!</h3>
-        <form>
-          <label htmlFor="name">Name: </label>
-          <input
-            id="name"
-            type="text"
-            name="name"
-            onChange={this.handleChange}
-            value={this.state.friends.name}
-          />
+        <form onSubmit={this.login}>
+          <label htmlFor="username">
+            Username:
+            <input
+              id="username"
+              type="text"
+              name="username"
+              onChange={this.handleChange}
+              value={this.state.credentials.username}
+            />
+          </label>
 
           <br></br>
 
-          <label htmlFor="email">Email: </label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            onChange={this.handleChange}
-            value={this.state.friends.name}
-          />
+          <label htmlFor="password">
+            Password:
+            <input
+              id="password"
+              type="password"
+              name="password"
+              onChange={this.handleChange}
+              value={this.state.credentials.password}
+            />
+          </label>
+          <br></br>
+          <button>Submit</button>
         </form>
-        <button>Submit</button>
       </div>
     );
   }
