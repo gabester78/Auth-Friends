@@ -1,5 +1,6 @@
 import React from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
+import Loader from "react-loader-spinner";
 
 class FriendsList extends React.Component {
   state = {

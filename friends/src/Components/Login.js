@@ -1,5 +1,6 @@
 import React from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
+import Loader from "react-loader-spinner";
 
 class Login extends React.Component {
   state = {
@@ -7,6 +8,7 @@ class Login extends React.Component {
       username: "",
       password: "",
     },
+    isLoading: false,
   };
 
   handleChange = (e) => {
@@ -20,6 +22,9 @@ class Login extends React.Component {
 
   login = (e) => {
     e.preventDefault();
+    this.setState({
+      isLoading: true,
+    });
     axiosWithAuth()
       .post(`/api/login`, this.state.credentials)
       .then((response) => {
@@ -32,6 +37,17 @@ class Login extends React.Component {
   };
 
   render() {
+    const transition = {
+      rotate: {
+        loop: Infinity,
+        ease: "linear",
+        duration: 5,
+      },
+      scale: {
+        duration: 0.5,
+      },
+    };
+
     return (
       <div>
         <h3>Login to see all our friends!</h3>
@@ -47,8 +63,6 @@ class Login extends React.Component {
             />
           </label>
 
-          <br></br>
-
           <label htmlFor="password">
             Password:
             <input
@@ -59,8 +73,12 @@ class Login extends React.Component {
               value={this.state.credentials.password}
             />
           </label>
-          <br></br>
           <button>Submit</button>
+          {this.state.isLoading && (
+            <div>
+              <Loader type="Grid" color="#00BFFF" height={80} width={80} />
+            </div>
+          )}
         </form>
       </div>
     );
